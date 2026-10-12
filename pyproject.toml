@@ -25,7 +25,8 @@ dependencies = [
 
 [project.optional-dependencies]
 plot = ["matplotlib>=3.7"]
-dev = ["pytest>=7", "ruff>=0.4", "matplotlib>=3.7"]
+# ruff is pinned to one minor series: `ruff format --check` output changes between minor releases
+dev = ["pytest>=7", "ruff~=0.17.0", "matplotlib>=3.7"]
 
 [project.scripts]
 radionuclide-uncertainty-lab = "RadioNuclide_Uncertainty_Lab.cli:main"

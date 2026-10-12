@@ -74,7 +74,7 @@ def load_config(source: str | Path | Mapping[str, Any]) -> LoadedConfig:
         raw = dict(source)
         text = yaml.safe_dump(raw, sort_keys=True)
     else:
-        text = Path(source).read_text()
+        text = Path(source).read_text(encoding="utf-8")
         raw = yaml.safe_load(text)
     if not isinstance(raw, dict):
         raise ValueError("config must be a mapping at the top level")

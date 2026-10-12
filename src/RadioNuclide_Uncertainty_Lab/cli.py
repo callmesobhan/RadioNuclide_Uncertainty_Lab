@@ -94,8 +94,10 @@ def _run(args: argparse.Namespace, cfg: LoadedConfig) -> int:
 
     out: Path = args.out
     out.mkdir(parents=True, exist_ok=True)
-    (out / "result.json").write_text(json.dumps(to_dict(analysis), indent=2) + "\n")
-    (out / "report.md").write_text(to_markdown(analysis))
+    (out / "result.json").write_text(
+        json.dumps(to_dict(analysis), indent=2) + "\n", encoding="utf-8"
+    )
+    (out / "report.md").write_text(to_markdown(analysis), encoding="utf-8")
     written = ["result.json", "report.md"]
 
     if not args.no_plots:
