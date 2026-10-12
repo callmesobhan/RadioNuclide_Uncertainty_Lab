@@ -1,0 +1,461 @@
+# Registry of published numbers used by this project, and the consistency checks that guard them.
+#
+# A *claim* is one number as printed in a source, with where to find it. Nothing here is derived
+# by hand: derived quantities are computed by the checks or by the code that uses them.
+# A *check* relates claims (or claims and physics) and is run by `check-data`, in CI and in tests.
+#   expect: pass      the relation must hold; if it fails, the claims it lists are excluded
+#   expect: conflict  a discrepancy in the source that we know about; the relation must keep
+#                     failing (so a correction upstream is noticed) and the named claims are
+#                     excluded from use until someone resolves it
+# Excluded claims cannot be referenced by a config (`claim:` field) or fetched with `require()`.
+
+version: 1
+
+sources:
+  staanum2021:
+    citation: "Staanum et al., Practical kidney dosimetry in PRRT using [177Lu]Lu-DOTATOC and [177Lu]Lu-DOTATATE with focus on uncertainty estimates. EJNMMI Phys 2021;8:78"
+    id: "PMC8590641"
+  gear2018:
+    citation: "Gear et al., EANM practical guidance on uncertainty analysis for molecular radiotherapy absorbed dose calculations. Eur J Nucl Med Mol Imaging 2018;45:2456-2474"
+    id: "doi:10.1007/s00259-018-4136-7; PMC6208822"
+  gleisner2022:
+    citation: "Sjogreen Gleisner et al., EANM dosimetry committee recommendations for dosimetry of 177Lu-labelled somatostatin-receptor- and PSMA-targeting ligands. Eur J Nucl Med Mol Imaging 2022;49:1778-1809"
+    id: "doi:10.1007/s00259-022-05727-7"
+  santoro2018:
+    citation: "Santoro L, Mora-Ramirez E, Trauchessec D, Chouaf S, Eustache P, Pouget J-P, Kotzki P-O, Bardies M, Deshayes E. Implementation of patient dosimetry in the clinical practice after targeted radiotherapy using [177Lu-[DOTA0, Tyr3]-octreotate. EJNMMI Res 2018;8:103 (title and authors from Crossref; CC BY 4.0)"
+    id: "doi:10.1186/s13550-018-0459-4"
+  opendose2020:
+    citation: "Chauvin M et al., OpenDose: open-access resource for nuclear medicine dosimetry. J Nucl Med 2020;61(10):1514, Table 1 (S values for a liver source, ICRP 110 female phantom: OpenDose, IDAC-Dose 2.1 and OLINDA/EXM 2.0)"
+    id: "doi:10.2967/jnumed.119.240366"
+  bodei2025:
+    citation: "Bodei et al., Dosimetry of [177Lu]Lu-DOTATATE in patients with advanced midgut neuroendocrine tumors (NETTER-1 substudy). J Nucl Med 2025;66:449-456"
+    id: "doi:10.2967/jnumed.124.268903"
+  ddep:
+    citation: "LNHB DDEP evaluation of 177Lu (M.A. Kellett, X. Mougeot; 07/03/2003 - 26/11/2025), Lu-177_tables.pdf, https://www.lnhb.fr/nuclides/Lu-177_tables.pdf; cite X. Mougeot et al., Metrologia 63 (2026) 019001, doi:10.1088/1681-7575/ae3733"
+    id: "primary evaluation; file 834937 bytes, sha256 3f4f12c406692dbe..., retrieved 2026-10-12"
+
+claims:
+  # ---- Staanum 2021, Table 2 (3-SPECT kidney example). Standard uncertainties, relative, percent.
+  staanum2021.t2.dose_calibrator_calibration: {value: 1, unit: percent, source: staanum2021, locator: "Table 2, calibration of dose calibrators"}
+  staanum2021.t2.dose_calibrator_stability:   {value: 1, unit: percent, source: staanum2021, locator: "Table 2, dose calibrator stability"}
+  staanum2021.t2.scanner_sensitivity:         {value: 2, unit: percent, source: staanum2021, locator: "Table 2, scanner calibration (S)"}
+  staanum2021.t2.scanner_deadtime_constant:   {value: 1, unit: percent, source: staanum2021, locator: "Table 2, scanner calibration (tau)"}
+  staanum2021.t2.reproduction:                {value: 6, unit: percent, source: staanum2021, locator: "Table 2, reproduction of activity"}
+  staanum2021.t2.scanner_stability:           {value: 2, unit: percent, source: staanum2021, locator: "Table 2, scanner stability"}
+  staanum2021.t2.deadtime_correction:         {value: 1, unit: percent, source: staanum2021, locator: "Table 2, dead-time correction"}
+  staanum2021.t2.delineation:                 {value: 3, unit: percent, source: staanum2021, locator: "Table 2, kidney delineation"}
+  staanum2021.t2.pvc:                         {value: 7, unit: percent, source: staanum2021, locator: "Table 2, partial volume correction"}
+  staanum2021.t2.exp_model_early:             {value: 1, unit: percent, source: staanum2021, locator: "Table 2, single-exponential model (1% + 1%)"}
+  staanum2021.t2.exp_model_late:              {value: 1, unit: percent, source: staanum2021, locator: "Table 2, single-exponential model (1% + 1%)"}
+  staanum2021.t2.dose_factor_gamma:           {value: 1, unit: percent, source: staanum2021, locator: "Table 2, dose factor (1% + 1%): gamma absorption"}
+  staanum2021.t2.dose_factor_density:         {value: 1, unit: percent, source: staanum2021, locator: "Table 2, dose factor (1% + 1%): density"}
+  staanum2021.t2.total_3spect:                {value: 13, unit: percent, source: staanum2021, locator: "Table 2, total 3-SPECT (rounded up)"}
+  staanum2021.fig6b.c0:                       {value: 8.9, unit: percent, source: staanum2021, locator: "Fig. 6b example, relative uncertainty of C0"}
+  staanum2021.fig6b.lambda:                   {value: 8.7, unit: percent, source: staanum2021, locator: "Fig. 6b example, relative uncertainty of lambda"}
+  staanum2021.fig6b.auc:                      {value: 6.1, unit: percent, source: staanum2021, locator: "Fig. 6b example, relative uncertainty of AUC"}
+  staanum2021.derived.rho_c0_teff:            {value: -0.76, unit: dimensionless, source: staanum2021, locator: "derived from fig6b (see check staanum.fig6b_correlation)"}
+  staanum2021.dotatate.specific_dose.mean:    {value: 0.46, unit: Gy/GBq, source: staanum2021, locator: "Results/Discussion, [177Lu]Lu-DOTATATE kidney"}
+  staanum2021.dotatate.specific_dose.median:  {value: 0.47, unit: Gy/GBq, source: staanum2021, locator: "Results, [177Lu]Lu-DOTATATE kidney"}
+  staanum2021.dotatate.teff.mean:             {value: 2.27, unit: d, source: staanum2021, locator: "Results, effective half-life [177Lu]Lu-DOTATATE"}
+  staanum2021.dotatate.teff.median:           {value: 2.22, unit: d, source: staanum2021, locator: "Results, effective half-life [177Lu]Lu-DOTATATE"}
+  staanum2021.administered_activity:          {value: 7400, unit: MBq, source: staanum2021, locator: "Methods, [177Lu]Lu-DOTATATE per fraction"}
+  staanum2021.lu177.half_life:                {value: 6.647, unit: d, source: staanum2021, locator: "Methods, physical half-life"}
+  staanum2021.lu177.delta_e:                  {value: 0.1479, unit: MeV, source: staanum2021, locator: "Methods, mean energy per decay"}
+  staanum2021.lu177.delta_e_nndc:             {value: 0.1465, unit: MeV, source: staanum2021, locator: "Methods, NNDC value"}
+  # known internal discrepancies of this source (both readings recorded, neither used)
+  staanum2021.dotatoc.specific_dose.mean.abstract:   {value: 0.37, unit: Gy/GBq, source: staanum2021, locator: "Abstract, DOTATOC kidney mean"}
+  staanum2021.dotatoc.specific_dose.median.abstract: {value: 0.38, unit: Gy/GBq, source: staanum2021, locator: "Abstract, DOTATOC kidney median"}
+  staanum2021.dotatoc.specific_dose.mean.results:    {value: 0.38, unit: Gy/GBq, source: staanum2021, locator: "Results, DOTATOC kidney mean"}
+  staanum2021.dotatoc.specific_dose.median.results:  {value: 0.37, unit: Gy/GBq, source: staanum2021, locator: "Results, DOTATOC kidney median"}
+  staanum2021.one_spect.lambda_unc.text:             {value: 5.5, unit: percent, source: staanum2021, locator: "Section 'Time-activity curve and absorbed dose', 1-SPECT lambda"}
+  staanum2021.one_spect.lambda_unc.table2:           {value: 9, unit: percent, source: staanum2021, locator: "Table 2 footnote d, 1-SPECT lambda"}
+
+  # ---- Gear 2018, worked example (90Y-DOTATATE lesions; tables as numbered in the paper)
+  gear2018.liver.tia:                  {value: 762, unit: MBq h, source: gear2018, locator: "Tables 9/12, liver lesion"}
+  gear2018.liver.tia_rel_unc:          {value: 26.7, unit: percent, source: gear2018, locator: "Table 9, total"}
+  gear2018.liver.mass:                 {value: 13.9, unit: g, source: gear2018, locator: "Table 1, liver VOI volume"}
+  gear2018.liver.mass_rel_unc:         {value: 57.6, unit: percent, source: gear2018, locator: "Table 1, combined"}
+  gear2018.liver.r_tia_s:              {value: -0.80, unit: dimensionless, source: gear2018, locator: "Table 12"}
+  gear2018.liver.dose:                 {value: 26.1, unit: Gy, source: gear2018, locator: "Table 13"}
+  gear2018.liver.dose_rel_unc:         {value: 37.6, unit: percent, source: gear2018, locator: "Table 13"}
+  gear2018.liver.s_rel_unc:            {value: 55.5, unit: percent, source: gear2018, locator: "Table 10"}
+  gear2018.pancreas.tia:               {value: 5933, unit: MBq h, source: gear2018, locator: "Table 9 (Table 12 prints 5,932)"}
+  gear2018.pancreas.tia_rel_unc:       {value: 10.9, unit: percent, source: gear2018, locator: "Table 9, total"}
+  gear2018.pancreas.mass:              {value: 142.0, unit: g, source: gear2018, locator: "Table 1"}
+  gear2018.pancreas.mass_rel_unc:      {value: 26.6, unit: percent, source: gear2018, locator: "Table 1, combined"}
+  gear2018.pancreas.r_tia_s:           {value: -0.95, unit: dimensionless, source: gear2018, locator: "Table 12"}
+  gear2018.pancreas.dose:              {value: 21.7, unit: Gy, source: gear2018, locator: "Table 13"}
+  gear2018.pancreas.dose_rel_unc:      {value: 15.6, unit: percent, source: gear2018, locator: "Table 13"}
+  gear2018.pancreas.s_rel_unc:         {value: 25.5, unit: percent, source: gear2018, locator: "Table 10"}
+  gear2018.s_model.c1:                 {value: 0.429, unit: "Gy/(MBq h) at 1 g", source: gear2018, locator: "Table 10, S = c1 m^-c2"}
+  gear2018.s_model.c2:                 {value: 0.961, unit: dimensionless, source: gear2018, locator: "Table 10 (printed as -0.961)"}
+  gear2018.s_model.c1_unc:             {value: 0.0037, unit: "Gy/(MBq h)", source: gear2018, locator: "Table 10"}
+  gear2018.s_model.c2_unc:             {value: 0.0051, unit: dimensionless, source: gear2018, locator: "Table 10"}
+  gear2018.s_model.c1_unc_listed:      {value: 0.4, unit: percent, source: gear2018, locator: "Table 10, listed relative uncertainty of c1"}
+  gear2018.s_model.c2_unc_listed:      {value: 1.2, unit: percent, source: gear2018, locator: "Table 10, listed relative uncertainty of c2"}
+  gear2018.fit.liver.a0:               {value: 19.6, unit: MBq, source: gear2018, locator: "Table 7"}
+  gear2018.fit.liver.a0_unc:           {value: 5.10, unit: MBq, source: gear2018, locator: "Table 7"}
+  gear2018.fit.liver.rate:             {value: 0.026, unit: 1/h, source: gear2018, locator: "Table 7"}
+  gear2018.fit.liver.rate_unc:         {value: 0.008, unit: 1/h, source: gear2018, locator: "Table 7 (rounded; Table 8 implies 0.00831)"}
+  gear2018.fit.liver.var_a0:           {value: 26.1, unit: MBq^2, source: gear2018, locator: "Table 8"}
+  gear2018.fit.liver.cov_a0_rate:      {value: 0.0377, unit: MBq/h, source: gear2018, locator: "Table 8"}
+  gear2018.fit.liver.var_rate:         {value: 6.91e-5, unit: 1/h^2, source: gear2018, locator: "Table 8"}
+  gear2018.fit.liver.tia_fit_unc:      {value: 15.1, unit: percent, source: gear2018, locator: "Table 9, fitting (random)"}
+
+  # ---- Gleisner 2022 (EANM), Tables 1-2: IDAC-Dose 2.1, adult male phantom
+  gleisner2022.s_self.kidneys:         {value: 0.204,  unit: "mGy/(MBq h)", source: gleisner2022, locator: "Table 2, S(kidney<-kidney)"}
+  gleisner2022.s_self.liver:           {value: 0.0376, unit: "mGy/(MBq h)", source: gleisner2022, locator: "Table 2, S(liver<-liver)"}
+  gleisner2022.s_self.spleen:          {value: 0.377,  unit: "mGy/(MBq h)", source: gleisner2022, locator: "Table 2, S(spleen<-spleen)"}
+  gleisner2022.s_self.marrow:          {value: 0.0349, unit: "mGy/(MBq h)", source: gleisner2022, locator: "Table 2, S(red marrow<-red marrow)"}
+  gleisner2022.mass.kidneys:           {value: 422,    unit: g, source: gleisner2022, locator: "Table 2"}
+  gleisner2022.mass.liver:             {value: 2360,   unit: g, source: gleisner2022, locator: "Table 2"}
+  gleisner2022.mass.spleen:            {value: 228.4,  unit: g, source: gleisner2022, locator: "Table 2"}
+  gleisner2022.mass.marrow:            {value: 1394,   unit: g, source: gleisner2022, locator: "Table 2"}
+  gleisner2022.mass_times_s.kidneys:   {value: 0.0861, unit: "mJ/(MBq h)", source: gleisner2022, locator: "Table 2"}
+  gleisner2022.mass_times_s.liver:     {value: 0.0887, unit: "mJ/(MBq h)", source: gleisner2022, locator: "Table 2"}
+  gleisner2022.mass_times_s.spleen:    {value: 0.0861, unit: "mJ/(MBq h)", source: gleisner2022, locator: "Table 2"}
+  gleisner2022.mass_times_s.marrow:    {value: 0.0487, unit: "mJ/(MBq h)", source: gleisner2022, locator: "Table 2"}
+  gleisner2022.delta_e:                {value: 0.1479, unit: MeV, source: gleisner2022, locator: "Table 1, ICRP 107 electrons (147.9 keV)"}
+  gleisner2022.delta_ph:               {value: 0.0351, unit: MeV, source: gleisner2022, locator: "Table 1, ICRP 107 photons (35.1 keV)"}
+  gleisner2022.rest_of_body_share_kidney_dose: {value: 2, unit: percent, source: gleisner2022, locator: "text, kidney dosimetry (about 2 % from the rest of the body)"}
+
+  # ---- cohort doses (variability between cohorts, not measurement uncertainty)
+  santoro2018.dose.kidneys:            {value: 0.43, unit: "mGy/MBq", source: santoro2018, locator: "Results, mean over patients and cycles"}
+  santoro2018.dose.liver:              {value: 0.54, unit: "mGy/MBq", source: santoro2018, locator: "Results, mean (SD 0.58)"}
+  santoro2018.dose.spleen:             {value: 0.61, unit: "mGy/MBq", source: santoro2018, locator: "Results, mean"}
+  bodei2025.dose.kidneys:              {value: 0.65, unit: "Gy/GBq", source: bodei2025, locator: "Table 2, mean"}
+  bodei2025.dose.liver:                {value: 0.30, unit: "Gy/GBq", source: bodei2025, locator: "Table 2, mean"}
+  bodei2025.dose.spleen:               {value: 0.85, unit: "Gy/GBq", source: bodei2025, locator: "Table 2, mean"}
+  bodei2025.tiac.kidneys:              {value: 2.7,  unit: h, source: bodei2025, locator: "text, mean TIA coefficient (SD 1.5 h)"}
+  bodei2025.tiac.liver:                {value: 14.6, unit: h, source: bodei2025, locator: "text, upper end of mean TIA coefficients"}
+
+  # ---- nuclear data
+  ddep.lu177.half_life:                {value: 6.6443, unit: d, source: ddep, locator: "Section 2, T1/2(177Lu): 6,6443 (9) d (evaluation revised 2025; older evaluations gave 6.647(4) d, still used by Staanum 2021)"}
+  ddep.lu177.half_life_unc:            {value: 0.0009, unit: d, source: ddep, locator: "Section 2, standard uncertainty"}
+  # beta- transitions to 177Hf: probability (%) and average energy (keV), Section 4
+  ddep.lu177.beta03.prob: {value: 11.55,  unit: percent, source: ddep, locator: "Section 4, beta- 0,3"}
+  ddep.lu177.beta03.avg:  {value: 46.70,  unit: keV,     source: ddep, locator: "Section 4, beta- 0,3 avg"}
+  ddep.lu177.beta02.prob: {value: 0.003,  unit: percent, source: ddep, locator: "Section 4, beta- 0,2"}
+  ddep.lu177.beta02.avg:  {value: 77.15,  unit: keV,     source: ddep, locator: "Section 4, beta- 0,2 avg"}
+  ddep.lu177.beta01.prob: {value: 8.99,   unit: percent, source: ddep, locator: "Section 4, beta- 0,1"}
+  ddep.lu177.beta01.avg:  {value: 110.23, unit: keV,     source: ddep, locator: "Section 4, beta- 0,1 avg"}
+  ddep.lu177.beta00.prob: {value: 79.45,  unit: percent, source: ddep, locator: "Section 4, beta- 0,0"}
+  ddep.lu177.beta00.avg:  {value: 147.75, unit: keV,     source: ddep, locator: "Section 4, beta- 0,0 avg"}
+  # conversion and Auger electrons, Section 4: emission per 100 disintegrations and the energy range of the group
+  ddep.lu177.auger_l.prob: {value: 8.48,    unit: percent, source: ddep, locator: "Section 4, eAL (Hf)"}
+  ddep.lu177.auger_l.emin: {value: 4.3,     unit: keV,     source: ddep, locator: "Section 4, eAL (Hf) energy range"}
+  ddep.lu177.auger_l.emax: {value: 11.2,    unit: keV,     source: ddep, locator: "Section 4, eAL (Hf) energy range"}
+  ddep.lu177.auger_k.prob: {value: 0.279,   unit: percent, source: ddep, locator: "Section 4, eAK (Hf)"}
+  ddep.lu177.auger_k.emin: {value: 42.601,  unit: keV,     source: ddep, locator: "Section 4, Auger K, KLL lower edge"}
+  ddep.lu177.auger_k.emax: {value: 65.34,   unit: keV,     source: ddep, locator: "Section 4, Auger K, KXY upper edge"}
+  ddep.lu177.ec32.prob:    {value: 0.154,   unit: percent, source: ddep, locator: "Section 4, ec3,2 T (Hf)"}
+  ddep.lu177.ec32.emin:    {value: 6.2909,  unit: keV,     source: ddep, locator: "Section 4, ec3,2 T energy range"}
+  ddep.lu177.ec32.emax:    {value: 71.6351, unit: keV,     source: ddep, locator: "Section 4, ec3,2 T energy range"}
+  ddep.lu177.ec10.prob:    {value: 13.88,   unit: percent, source: ddep, locator: "Section 4, ec1,0 T (Hf)"}
+  ddep.lu177.ec10.emin:    {value: 47.5992, unit: keV,     source: ddep, locator: "Section 4, ec1,0 T energy range"}
+  ddep.lu177.ec10.emax:    {value: 112.9434, unit: keV,    source: ddep, locator: "Section 4, ec1,0 T energy range"}
+  ddep.lu177.ec21.prob:    {value: 0.0535,  unit: percent, source: ddep, locator: "Section 4, ec2,1 T (Hf)"}
+  ddep.lu177.ec21.emin:    {value: 71.3734, unit: keV,     source: ddep, locator: "Section 4, ec2,1 T energy range"}
+  ddep.lu177.ec21.emax:    {value: 136.7176, unit: keV,    source: ddep, locator: "Section 4, ec2,1 T energy range"}
+  ddep.lu177.ec31.prob:    {value: 0.58,    unit: percent, source: ddep, locator: "Section 4, ec3,1 T (Hf)"}
+  ddep.lu177.ec31.emin:    {value: 143.0150, unit: keV,    source: ddep, locator: "Section 4, ec3,1 T energy range"}
+  ddep.lu177.ec31.emax:    {value: 208.3592, unit: keV,    source: ddep, locator: "Section 4, ec3,1 T energy range"}
+  ddep.lu177.ec20.prob:    {value: 0.02800, unit: percent, source: ddep, locator: "Section 4, ec2,0 T (Hf)"}
+  ddep.lu177.ec20.emin:    {value: 184.3234, unit: keV,    source: ddep, locator: "Section 4, ec2,0 T energy range"}
+  ddep.lu177.ec20.emax:    {value: 249.6676, unit: keV,    source: ddep, locator: "Section 4, ec2,0 T energy range"}
+  ddep.lu177.ec30.prob:    {value: 0.0105,  unit: percent, source: ddep, locator: "Section 4, ec3,0 T (Hf)"}
+  ddep.lu177.ec30.emin:    {value: 255.9651, unit: keV,    source: ddep, locator: "Section 4, ec3,0 T energy range"}
+  ddep.lu177.ec30.emax:    {value: 321.3093, unit: keV,    source: ddep, locator: "Section 4, ec3,0 T energy range"}
+
+  # ---- OpenDose 2020, Table 1: 177Lu S values for a LIVER source in the ICRP 110 FEMALE phantom.
+  # Units are not printed in the table; mGy/(MBq s) is inferred and confirmed by the agreement of all six
+  # targets (four orders of magnitude) with MIRDcalc, see checks svalues.female.*
+  opendose2020.t1.lu177.brain.opendose:            {value: 8.423e-10, unit: "mGy/(MBq s)", source: opendose2020, locator: "Table 1, Brain, OpenDose"}
+  opendose2020.t1.lu177.brain.idac:                {value: 8.44e-10,  unit: "mGy/(MBq s)", source: opendose2020, locator: "Table 1, Brain, IDAC-Dose 2.1"}
+  opendose2020.t1.lu177.gallbladder_wall.opendose: {value: 1.100e-6,  unit: "mGy/(MBq s)", source: opendose2020, locator: "Table 1, Gallbladder wall, OpenDose"}
+  opendose2020.t1.lu177.gallbladder_wall.idac:     {value: 1.09e-6,   unit: "mGy/(MBq s)", source: opendose2020, locator: "Table 1, Gallbladder wall, IDAC-Dose 2.1"}
+  opendose2020.t1.lu177.liver.opendose:            {value: 1.753e-5,  unit: "mGy/(MBq s)", source: opendose2020, locator: "Table 1, Liver (self), OpenDose; the paper attributes its difference from IDAC-Dose to the mass adjustment of the ICRP 133 SAFs"}
+  opendose2020.t1.lu177.liver.idac:                {value: 1.36e-5,   unit: "mGy/(MBq s)", source: opendose2020, locator: "Table 1, Liver (self), IDAC-Dose 2.1"}
+  opendose2020.t1.lu177.pancreas.opendose:         {value: 2.255e-7,  unit: "mGy/(MBq s)", source: opendose2020, locator: "Table 1, Pancreas, OpenDose"}
+  opendose2020.t1.lu177.pancreas.idac:             {value: 2.27e-7,   unit: "mGy/(MBq s)", source: opendose2020, locator: "Table 1, Pancreas, IDAC-Dose 2.1"}
+  opendose2020.t1.lu177.spleen.opendose:           {value: 7.655e-8,  unit: "mGy/(MBq s)", source: opendose2020, locator: "Table 1, Spleen, OpenDose"}
+  opendose2020.t1.lu177.spleen.idac:               {value: 7.69e-8,   unit: "mGy/(MBq s)", source: opendose2020, locator: "Table 1, Spleen, IDAC-Dose 2.1"}
+  opendose2020.t1.lu177.thyroid.opendose:          {value: 1.282e-8,  unit: "mGy/(MBq s)", source: opendose2020, locator: "Table 1, Thyroid, OpenDose"}
+  opendose2020.t1.lu177.thyroid.idac:              {value: 1.29e-8,   unit: "mGy/(MBq s)", source: opendose2020, locator: "Table 1, Thyroid, IDAC-Dose 2.1"}
+
+checks:
+  # ---------------- internal consistency of a source ----------------
+  - id: staanum.quadrature_3spect
+    kind: quadrature
+    terms: [staanum2021.t2.dose_calibrator_calibration, staanum2021.t2.dose_calibrator_stability,
+            staanum2021.t2.scanner_sensitivity, staanum2021.t2.scanner_deadtime_constant,
+            staanum2021.t2.reproduction, staanum2021.t2.scanner_stability, staanum2021.t2.deadtime_correction,
+            staanum2021.t2.delineation, staanum2021.t2.pvc, staanum2021.t2.exp_model_early,
+            staanum2021.t2.exp_model_late, staanum2021.fig6b.auc, staanum2021.t2.dose_factor_gamma,
+            staanum2021.t2.dose_factor_density]
+    total: staanum2021.t2.total_3spect
+    mode: up           # the paper rounds each term up, so the printed total >= the exact quadrature
+    tol: 1.0           # percentage points
+    expect: pass
+    note: "Table 2 terms add in quadrature to 12.1 %; the paper prints 13 % (rounded up)."
+
+  - id: staanum.fig6b_correlation
+    kind: agree
+    a: staanum2021.derived.rho_c0_teff
+    b: {expr: "-(staanum2021.fig6b.c0**2 + staanum2021.fig6b.lambda**2 - staanum2021.fig6b.auc**2) / (2*staanum2021.fig6b.c0*staanum2021.fig6b.lambda)"}
+    abs_tol: 0.01
+    expect: pass
+    note: "r(C0, lambda) implied by the three Fig. 6b uncertainties; T_eff = ln2/lambda flips the sign."
+
+  - id: staanum.fig6b_correlation_is_valid
+    kind: bound
+    value: {expr: "(staanum2021.fig6b.c0**2 + staanum2021.fig6b.lambda**2 - staanum2021.fig6b.auc**2) / (2*staanum2021.fig6b.c0*staanum2021.fig6b.lambda)"}
+    lo: -1
+    hi: 1
+    expect: pass
+
+  - id: staanum.abstract_vs_results.dotatoc_mean
+    kind: agree
+    a: staanum2021.dotatoc.specific_dose.mean.abstract
+    b: staanum2021.dotatoc.specific_dose.mean.results
+    rel_tol: 0.01
+    expect: conflict
+    exclude: [staanum2021.dotatoc.specific_dose.mean.abstract, staanum2021.dotatoc.specific_dose.mean.results]
+    note: "Abstract and Results swap the DOTATOC mean and median (0.37/0.38 versus 0.38/0.37)."
+
+  - id: staanum.abstract_vs_results.dotatoc_median
+    kind: agree
+    a: staanum2021.dotatoc.specific_dose.median.abstract
+    b: staanum2021.dotatoc.specific_dose.median.results
+    rel_tol: 0.01
+    expect: conflict
+    exclude: [staanum2021.dotatoc.specific_dose.median.abstract, staanum2021.dotatoc.specific_dose.median.results]
+    note: "Same swap as above, median reading."
+
+  - id: staanum.one_spect_lambda_uncertainty
+    kind: agree
+    a: staanum2021.one_spect.lambda_unc.text
+    b: staanum2021.one_spect.lambda_unc.table2
+    rel_tol: 0.05
+    expect: conflict
+    exclude: [staanum2021.one_spect.lambda_unc.text, staanum2021.one_spect.lambda_unc.table2]
+    note: "1-SPECT lambda uncertainty is 5.5 % in the text and 9 % in Table 2 footnote d."
+
+  - id: gear.s_model_c2_uncertainty
+    kind: agree
+    a: gear2018.s_model.c2_unc_listed
+    b: {expr: "100*gear2018.s_model.c2_unc/gear2018.s_model.c2"}
+    rel_tol: 0.10
+    expect: conflict
+    exclude: [gear2018.s_model.c2_unc_listed]
+    note: "Table 10 lists 1.2 % for c2 but 0.0051/0.961 = 0.53 %."
+
+  - id: gear.s_model_c1_uncertainty
+    kind: agree
+    a: gear2018.s_model.c1_unc_listed
+    b: {expr: "100*gear2018.s_model.c1_unc/gear2018.s_model.c1"}
+    rel_tol: 0.10
+    expect: conflict
+    exclude: [gear2018.s_model.c1_unc_listed]
+    note: "Table 10 lists 0.4 % for c1 but 0.0037/0.429 = 0.86 %. Both are ignored by the paper (<1 %)."
+
+  - {id: gear.liver.nominal_dose, kind: agree, a: gear2018.liver.dose,
+     b: {expr: "gear2018.liver.tia*gear2018.s_model.c1*gear2018.liver.mass**(-gear2018.s_model.c2)"}, rel_tol: 0.005, expect: pass}
+  - {id: gear.pancreas.nominal_dose, kind: agree, a: gear2018.pancreas.dose,
+     b: {expr: "gear2018.pancreas.tia*gear2018.s_model.c1*gear2018.pancreas.mass**(-gear2018.s_model.c2)"}, rel_tol: 0.005, expect: pass}
+  - {id: gear.liver.s_uncertainty, kind: agree, a: gear2018.liver.s_rel_unc,
+     b: {expr: "gear2018.s_model.c2*gear2018.liver.mass_rel_unc"}, rel_tol: 0.01, expect: pass}
+  - {id: gear.pancreas.s_uncertainty, kind: agree, a: gear2018.pancreas.s_rel_unc,
+     b: {expr: "gear2018.s_model.c2*gear2018.pancreas.mass_rel_unc"}, rel_tol: 0.01, expect: pass}
+  - id: gear.liver.first_order_dose_uncertainty
+    kind: agree
+    a: gear2018.liver.dose_rel_unc
+    b: {expr: "sqrt(gear2018.liver.tia_rel_unc**2 + gear2018.liver.s_rel_unc**2 + 2*gear2018.liver.r_tia_s*gear2018.liver.tia_rel_unc*gear2018.liver.s_rel_unc)"}
+    rel_tol: 0.01
+    expect: pass
+  - id: gear.pancreas.first_order_dose_uncertainty
+    kind: agree
+    a: gear2018.pancreas.dose_rel_unc
+    b: {expr: "sqrt(gear2018.pancreas.tia_rel_unc**2 + gear2018.pancreas.s_rel_unc**2 + 2*gear2018.pancreas.r_tia_s*gear2018.pancreas.tia_rel_unc*gear2018.pancreas.s_rel_unc)"}
+    rel_tol: 0.01
+    expect: pass
+  - id: gear.fit_covariance_reproduces_fit_term
+    kind: agree
+    a: gear2018.fit.liver.tia_fit_unc
+    b: {expr: "100*sqrt((1/gear2018.fit.liver.rate)**2*gear2018.fit.liver.var_a0 + (gear2018.fit.liver.a0/gear2018.fit.liver.rate**2)**2*gear2018.fit.liver.var_rate - 2*(1/gear2018.fit.liver.rate)*(gear2018.fit.liver.a0/gear2018.fit.liver.rate**2)*gear2018.fit.liver.cov_a0_rate)/(gear2018.fit.liver.a0/gear2018.fit.liver.rate)"}
+    rel_tol: 0.03
+    expect: pass
+    note: "Delta method on the Table 8 covariance gives 14.9 % against the printed 15.1 %."
+  - id: gear.fit_rate_uncertainty_consistent
+    kind: agree
+    a: gear2018.fit.liver.rate_unc
+    b: {expr: "sqrt(gear2018.fit.liver.var_rate)"}
+    rel_tol: 0.05
+    expect: pass
+
+  # ---------------- agreement between independent sources ----------------
+  - {id: gleisner.mass_times_s.kidneys, kind: agree, a: gleisner2022.mass_times_s.kidneys,
+     b: {expr: "gleisner2022.s_self.kidneys*gleisner2022.mass.kidneys/1000"}, rel_tol: 0.01, expect: pass}
+  - {id: gleisner.mass_times_s.liver, kind: agree, a: gleisner2022.mass_times_s.liver,
+     b: {expr: "gleisner2022.s_self.liver*gleisner2022.mass.liver/1000"}, rel_tol: 0.01, expect: pass}
+  - {id: gleisner.mass_times_s.spleen, kind: agree, a: gleisner2022.mass_times_s.spleen,
+     b: {expr: "gleisner2022.s_self.spleen*gleisner2022.mass.spleen/1000"}, rel_tol: 0.01, expect: pass}
+  - {id: gleisner.mass_times_s.marrow, kind: agree, a: gleisner2022.mass_times_s.marrow,
+     b: {expr: "gleisner2022.s_self.marrow*gleisner2022.mass.marrow/1000"}, rel_tol: 0.01, expect: pass}
+  - {id: nuclide.delta_e_icrp107_vs_nndc, kind: agree, a: staanum2021.lu177.delta_e, b: staanum2021.lu177.delta_e_nndc,
+     rel_tol: 0.015, expect: pass, note: "ICRP 107 and NNDC electron energies differ by ~1 %: a measure of nuclear-data uncertainty."}
+  - {id: nuclide.delta_e_two_sources, kind: agree, a: staanum2021.lu177.delta_e, b: gleisner2022.delta_e, rel_tol: 0.001, expect: pass}
+  - id: nuclide.half_life_staanum_vs_ddep
+    kind: agree
+    a: staanum2021.lu177.half_life
+    b: ddep.lu177.half_life
+    rel_tol: 0.001
+    expect: pass
+    note: "6.647 d (Staanum, an older DDEP evaluation) vs 6.6443(9) d (current DDEP): 0.04 %, immaterial, but the registry now holds the current value."
+  - id: nuclide.half_life_within_older_uncertainty
+    kind: bound
+    value: staanum2021.lu177.half_life
+    lo: {expr: "ddep.lu177.half_life - 5*ddep.lu177.half_life_unc"}
+    hi: {expr: "ddep.lu177.half_life + 5*ddep.lu177.half_life_unc"}
+    expect: pass
+  - id: nuclide.delta_e_within_ddep_bounds
+    kind: bound
+    value: {expr: "1000*gleisner2022.delta_e"}
+    lo: {expr: "(ddep.lu177.beta03.prob*ddep.lu177.beta03.avg + ddep.lu177.beta02.prob*ddep.lu177.beta02.avg + ddep.lu177.beta01.prob*ddep.lu177.beta01.avg + ddep.lu177.beta00.prob*ddep.lu177.beta00.avg)/100 + (ddep.lu177.auger_l.prob*ddep.lu177.auger_l.emin + ddep.lu177.auger_k.prob*ddep.lu177.auger_k.emin + ddep.lu177.ec32.prob*ddep.lu177.ec32.emin + ddep.lu177.ec10.prob*ddep.lu177.ec10.emin + ddep.lu177.ec21.prob*ddep.lu177.ec21.emin + ddep.lu177.ec31.prob*ddep.lu177.ec31.emin + ddep.lu177.ec20.prob*ddep.lu177.ec20.emin + ddep.lu177.ec30.prob*ddep.lu177.ec30.emin)/100"}
+    hi: {expr: "(ddep.lu177.beta03.prob*ddep.lu177.beta03.avg + ddep.lu177.beta02.prob*ddep.lu177.beta02.avg + ddep.lu177.beta01.prob*ddep.lu177.beta01.avg + ddep.lu177.beta00.prob*ddep.lu177.beta00.avg)/100 + (ddep.lu177.auger_l.prob*ddep.lu177.auger_l.emax + ddep.lu177.auger_k.prob*ddep.lu177.auger_k.emax + ddep.lu177.ec32.prob*ddep.lu177.ec32.emax + ddep.lu177.ec10.prob*ddep.lu177.ec10.emax + ddep.lu177.ec21.prob*ddep.lu177.ec21.emax + ddep.lu177.ec31.prob*ddep.lu177.ec31.emax + ddep.lu177.ec20.prob*ddep.lu177.ec20.emax + ddep.lu177.ec30.prob*ddep.lu177.ec30.emax)/100"}
+    expect: pass
+    note: "ICRP 107 electron energy per decay (147.9 keV) must lie between the DDEP beta averages plus the minimum, and plus the maximum, conversion- and Auger-electron energy of each group."
+  - id: nuclide.delta_e_nndc_within_ddep_bounds
+    kind: bound
+    value: {expr: "1000*staanum2021.lu177.delta_e_nndc"}
+    lo: {expr: "(ddep.lu177.beta03.prob*ddep.lu177.beta03.avg + ddep.lu177.beta02.prob*ddep.lu177.beta02.avg + ddep.lu177.beta01.prob*ddep.lu177.beta01.avg + ddep.lu177.beta00.prob*ddep.lu177.beta00.avg)/100 + (ddep.lu177.auger_l.prob*ddep.lu177.auger_l.emin + ddep.lu177.auger_k.prob*ddep.lu177.auger_k.emin + ddep.lu177.ec32.prob*ddep.lu177.ec32.emin + ddep.lu177.ec10.prob*ddep.lu177.ec10.emin + ddep.lu177.ec21.prob*ddep.lu177.ec21.emin + ddep.lu177.ec31.prob*ddep.lu177.ec31.emin + ddep.lu177.ec20.prob*ddep.lu177.ec20.emin + ddep.lu177.ec30.prob*ddep.lu177.ec30.emin)/100"}
+    hi: {expr: "(ddep.lu177.beta03.prob*ddep.lu177.beta03.avg + ddep.lu177.beta02.prob*ddep.lu177.beta02.avg + ddep.lu177.beta01.prob*ddep.lu177.beta01.avg + ddep.lu177.beta00.prob*ddep.lu177.beta00.avg)/100 + (ddep.lu177.auger_l.prob*ddep.lu177.auger_l.emax + ddep.lu177.auger_k.prob*ddep.lu177.auger_k.emax + ddep.lu177.ec32.prob*ddep.lu177.ec32.emax + ddep.lu177.ec10.prob*ddep.lu177.ec10.emax + ddep.lu177.ec21.prob*ddep.lu177.ec21.emax + ddep.lu177.ec31.prob*ddep.lu177.ec31.emax + ddep.lu177.ec20.prob*ddep.lu177.ec20.emax + ddep.lu177.ec30.prob*ddep.lu177.ec30.emax)/100"}
+    expect: pass
+  - {id: kidney_dose.staanum_vs_santoro, kind: agree, a: staanum2021.dotatate.specific_dose.mean,
+     b: {expr: "santoro2018.dose.kidneys"}, rel_tol: 0.10, expect: pass,
+     note: "Two independent cohorts; same quantity (kidney mean dose per activity, Gy/GBq == mGy/MBq)."}
+  - {id: kidney_dose.cohort_spread, kind: spread, max_ratio: 1.6,
+     values: [staanum2021.dotatate.specific_dose.mean, santoro2018.dose.kidneys, bodei2025.dose.kidneys], expect: pass,
+     note: "Informational: cohort-to-cohort variability (0.43-0.65 Gy/GBq), not part of the measurement-uncertainty budget."}
+  - {id: kidney_tiac.bodei_vs_derived, kind: spread, max_ratio: 1.5,
+     values: [bodei2025.tiac.kidneys, {expr: "staanum2021.dotatate.specific_dose.mean/gleisner2022.s_self.kidneys"}], expect: pass,
+     note: "Derived kidney TIA coefficient (D/A over S) against the independently reported mean."}
+
+  - id: nuclides.registry_matches_claims
+    kind: refdata
+    name: nuclide_registry
+    nuclide: Lu-177
+    rel_tol: 1.0e-9
+    fields:
+      half_life_d: ddep.lu177.half_life
+      half_life_unc_d: ddep.lu177.half_life_unc
+      delta_e_mev: gleisner2022.delta_e
+      delta_ph_mev: gleisner2022.delta_ph
+      delta_e_alt_mev: staanum2021.lu177.delta_e_nndc
+    expect: pass
+    note: "nuclides.py must equal the registry of published numbers; this check would have caught the stale 6.647 d."
+
+  # ---------------- reference datasets (physics + cross-database) ----------------
+  - id: svalues.reciprocity
+    kind: refdata
+    name: reciprocity
+    dataset: lu177_adult_male
+    rel_tol: 0.05
+    min_relative: 1.0e-3
+    expect: pass
+    note: "Specific absorbed fractions are symmetric: S(t<-s) = S(s<-t) up to Monte Carlo noise. Tested for cross terms >= 1e-3 of the self terms (smaller ones are noise-dominated: up to 13 % asymmetry at 1e-5, and below 0.1 % of any dose)."
+  - id: svalues.reciprocity_scenario_organs
+    kind: refdata
+    name: reciprocity
+    dataset: lu177_adult_male
+    regions: [Kidneys, Liver, Spleen]
+    rel_tol: 0.01
+    expect: pass
+    note: "The three organs the shipped scenario uses: symmetric to better than 1 % (the marrow pairs above are the noisy ones)."
+  - id: svalues.energy_conservation
+    kind: refdata
+    name: energy_conservation
+    dataset: lu177_adult_male
+    expect: pass
+    note: "The energy absorbed in the listed targets per MBq h of a source cannot exceed the energy emitted."
+  - id: svalues.agree_with_idac_self_s
+    kind: refdata
+    name: matches_claims
+    dataset: lu177_adult_male
+    rel_tol: 0.01
+    pairs:
+      Kidneys: {s: gleisner2022.s_self.kidneys, mass: gleisner2022.mass.kidneys}
+      Liver: {s: gleisner2022.s_self.liver, mass: gleisner2022.mass.liver}
+      Spleen: {s: gleisner2022.s_self.spleen, mass: gleisner2022.mass.spleen}
+      "Bone marrow - red (active)": {s: gleisner2022.s_self.marrow, mass: gleisner2022.mass.marrow}
+    expect: pass
+    note: "MIRDcalc (downloaded) against IDAC-Dose 2.1 (Gleisner Table 2): same phantom, independent codes."
+
+  # ---- second, independent source for the CROSS-organ terms (female phantom, liver source) ----------
+  # The male S-values used in the scenario have no independent cross-term table. The same MIRDcalc
+  # pipeline (decay data, transport, regions) is therefore validated on the female phantom, where IDAC-Dose
+  # 2.1 and OpenDose published Lu-177 values for a liver source (OpenDose 2020, Table 1).
+  - id: svalues.female.cross_vs_idac
+    kind: refdata
+    name: matches_s_claims
+    dataset: lu177_adult_female
+    rel_tol: 0.01
+    pairs:
+      - {target: Brain,            source: Liver, claim: opendose2020.t1.lu177.brain.idac}
+      - {target: Gallbladder wall, source: Liver, claim: opendose2020.t1.lu177.gallbladder_wall.idac}
+      - {target: Liver,            source: Liver, claim: opendose2020.t1.lu177.liver.idac}
+      - {target: Pancreas,         source: Liver, claim: opendose2020.t1.lu177.pancreas.idac}
+      - {target: Spleen,           source: Liver, claim: opendose2020.t1.lu177.spleen.idac}
+      - {target: Thyroid,          source: Liver, claim: opendose2020.t1.lu177.thyroid.idac}
+    expect: pass
+    note: "MIRDcalc vs IDAC-Dose 2.1, six targets spanning four orders of magnitude (also fixes the unprinted units)."
+  - id: svalues.female.cross_vs_opendose
+    kind: refdata
+    name: matches_s_claims
+    dataset: lu177_adult_female
+    rel_tol: 0.01
+    pairs:
+      - {target: Brain,            source: Liver, claim: opendose2020.t1.lu177.brain.opendose}
+      - {target: Gallbladder wall, source: Liver, claim: opendose2020.t1.lu177.gallbladder_wall.opendose}
+      - {target: Pancreas,         source: Liver, claim: opendose2020.t1.lu177.pancreas.opendose}
+      - {target: Spleen,           source: Liver, claim: opendose2020.t1.lu177.spleen.opendose}
+      - {target: Thyroid,          source: Liver, claim: opendose2020.t1.lu177.thyroid.opendose}
+    expect: pass
+    note: "MIRDcalc vs OpenDose for the five cross terms (liver self term below)."
+  - id: svalues.female.liver_self_vs_opendose
+    kind: refdata
+    name: matches_s_claims
+    dataset: lu177_adult_female
+    rel_tol: 0.05
+    pairs:
+      - {target: Liver, source: Liver, claim: opendose2020.t1.lu177.liver.opendose}
+    expect: conflict
+    exclude: [opendose2020.t1.lu177.liver.opendose]
+    note: "OpenDose's liver SELF value is 29 % above MIRDcalc and IDAC-Dose; the paper attributes it to the mass adjustment made in the ICRP 133 SAFs. Self terms only; cross terms agree to 0.5 %."
+  - id: svalues.female.reciprocity
+    kind: refdata
+    name: reciprocity
+    dataset: lu177_adult_female
+    rel_tol: 0.05
+    min_relative: 1.0e-3
+    expect: pass
+  - id: svalues.female.energy_conservation
+    kind: refdata
+    name: energy_conservation
+    dataset: lu177_adult_female
+    expect: pass
+
+  # ---- the quantity the scenario cares about: cross dose to the kidneys vs the EANM statement -----------
+  - id: svalues.male.kidney_cross_share_vs_eanm
+    kind: refdata
+    name: anchored_cross_share
+    dataset: lu177_adult_male
+    target: kidneys
+    organs:
+      kidneys: {region: Kidneys, dose: staanum2021.dotatate.specific_dose.mean}
+      liver: {region: Liver, dose: santoro2018.dose.liver}
+      spleen: {region: Spleen, dose: santoro2018.dose.spleen}
+    claim: gleisner2022.rest_of_body_share_kidney_dose
+    abs_tol: 0.7
+    expect: pass
+    note: "Share of the anchored kidney dose that comes from liver and spleen, against 'about 2 %' in the EANM recommendations."

@@ -1,0 +1,123 @@
+# 177Lu-DOTATATE, one 7.4 GBq cycle: kidneys, liver, spleen, with cross-organ dose.
+#
+# A REFERENCE SCENARIO ASSEMBLED FROM PUBLISHED VALUES. It is not a patient and not a clinical
+# recommendation. Every number is one of: (a) a *claim* in data/claims.yaml (cited here with
+# `claim:`; the loader checks the distribution realises the claim and refuses excluded claims),
+# (b) data from the S-value dataset `lu177_adult_male`, or (c) derived below, with the derivation
+# enforced by tests/test_data_integrity.py.  Run `check-data` to see every consistency check.
+#
+# What the uncertainties mean: the *measurement chain* of one patient's dose estimate (calibration,
+# quantification, curve fit, dose factor), not inter-patient variability. The kidney budget is
+# Staanum et al. 2021, Table 2; it is transferred to liver and spleen as a stated assumption.
+#
+# S-values and masses: MIRDcalc database, ICRP 110 adult male phantom, ICRP 107 decay data,
+# extracted by tools/extract_mirdcalc_svalues.py (provenance in the dataset). Self terms agree with
+# IDAC-Dose 2.1 (Gleisner 2022, Table 2) within 0.4%; cross terms are included.
+#
+# Nominal values are anchored so the model reproduces published cohort mean doses at nominal inputs
+# (total dose, self + cross):   S . T = D   solved jointly (mird.tia_coefficients_from_doses)
+#   D (Gy/GBq): kidneys 0.46 [staanum2021.dotatate.specific_dose.mean],
+#               liver   0.54 [santoro2018.dose.liver], spleen 0.61 [santoro2018.dose.spleen]
+#   -> TIA coefficients (h): kidneys 2.2061, liver 14.287, spleen 1.6054
+#   kidneys: uptake fraction f = T * ln2 / T_eff, T_eff = 2.27 d = 54.48 h -> f = 0.028068
+#
+# Not modelled: remainder of body, tumours, red marrow (the dataset has marrow if you add it).
+
+name: 177Lu-DOTATATE multi-organ dose, one 7.4 GBq cycle (reference scenario)
+model: multi_organ
+nuclide: Lu-177
+s_values: lu177_adult_male     # self S-values, masses and cross-organ S-values (cross_dose: true by default)
+
+fixed:
+  administered_activity_mbq: 7400      # [staanum2021.administered_activity]
+  liver.tia_coefficient_h: 14.287      # derived, see header
+  spleen.tia_coefficient_h: 1.6054     # derived, see header
+
+organs:
+  kidneys:
+    region: Kidneys
+    kinetics: mono_exponential
+    source: "S, mass: MIRDcalc lu177_adult_male (Kidneys, 422 g); kinetics: [staanum2021]"
+  liver:
+    region: Liver
+    kinetics: tia_coefficient
+    source: "S, mass: MIRDcalc lu177_adult_male (Liver, 2360 g)"
+  spleen:
+    region: Spleen
+    kinetics: tia_coefficient
+    source: "S, mass: MIRDcalc lu177_adult_male (Spleen, 228.4 g)"
+
+parameters:
+  # ---- shared systematic factors: one error, applied to every organ ----------------------------
+  activity_scale.dose_calibrator_calibration:
+    {dist: normal, mean: 1, rel_sd: 0.01, group: dose_calibrator, unit: "-", claim: staanum2021.t2.dose_calibrator_calibration,
+     source: "[Staanum2021] Table 2: calibration of dose calibrators (the 3% calibration-source term cancels for specific dose)"}
+  activity_scale.dose_calibrator_stability:
+    {dist: normal, mean: 1, rel_sd: 0.01, group: dose_calibrator, unit: "-", claim: staanum2021.t2.dose_calibrator_stability,
+     source: "[Staanum2021] Table 2: dose calibrator stability"}
+  activity_scale.spect_sensitivity:
+    {dist: normal, mean: 1, rel_sd: 0.02, group: spect_quantification, unit: "-", claim: staanum2021.t2.scanner_sensitivity,
+     source: "[Staanum2021] Table 2: scanner calibration (sensitivity)"}
+  activity_scale.spect_deadtime_constant:
+    {dist: normal, mean: 1, rel_sd: 0.01, group: spect_quantification, unit: "-", claim: staanum2021.t2.scanner_deadtime_constant,
+     source: "[Staanum2021] Table 2: scanner calibration (dead-time constant)"}
+  activity_scale.spect_reproduction:
+    {dist: normal, mean: 1, rel_sd: 0.06, group: spect_quantification, unit: "-", claim: staanum2021.t2.reproduction,
+     source: "[Staanum2021] Table 2: reproduction of activity (from a 26% range, triangular)"}
+  activity_scale.spect_stability:
+    {dist: normal, mean: 1, rel_sd: 0.02, group: spect_quantification, unit: "-", claim: staanum2021.t2.scanner_stability,
+     source: "[Staanum2021] Table 2: scanner stability"}
+  activity_scale.spect_deadtime_correction:
+    {dist: normal, mean: 1, rel_sd: 0.01, group: spect_quantification, unit: "-", claim: staanum2021.t2.deadtime_correction,
+     source: "[Staanum2021] Table 2: dead-time correction"}
+
+  # ---- organ-specific factors, expanded once per organ -----------------------------------------
+  "{organ}.activity_scale.delineation":
+    {dist: normal, mean: 1, rel_sd: 0.03, group: "delineation_pvc.{organ}", unit: "-", claim: staanum2021.t2.delineation,
+     source: "[Staanum2021] Table 2: kidney delineation (applied to {organ}; measured for kidneys, assumed to transfer)"}
+  "{organ}.activity_scale.pvc":
+    {dist: normal, mean: 1, rel_sd: 0.07, group: "delineation_pvc.{organ}", unit: "-", claim: staanum2021.t2.pvc,
+     source: "[Staanum2021] Table 2: partial-volume correction (applied to {organ}; measured for kidneys, assumed to transfer)"}
+  "{organ}.activity_scale.tac_model_early":
+    {dist: normal, mean: 1, rel_sd: 0.01, group: "tac_model.{organ}", unit: "-", claim: staanum2021.t2.exp_model_early,
+     source: "[Staanum2021] Table 2: single-exponential model (early)"}
+  "{organ}.activity_scale.tac_model_late":
+    {dist: normal, mean: 1, rel_sd: 0.01, group: "tac_model.{organ}", unit: "-", claim: staanum2021.t2.exp_model_late,
+     source: "[Staanum2021] Table 2: single-exponential model (late)"}
+  "{organ}.dose_scale.gamma_absorption":
+    {dist: normal, mean: 1, rel_sd: 0.01, group: "dose_factor.{organ}", unit: "-", claim: staanum2021.t2.dose_factor_gamma,
+     source: "[Staanum2021] Table 2: dose factor, gamma absorption"}
+  "{organ}.dose_scale.density":
+    {dist: normal, mean: 1, rel_sd: 0.01, group: "dose_factor.{organ}", unit: "-", claim: staanum2021.t2.dose_factor_density,
+     source: "[Staanum2021] Table 2: dose factor, organ density"}
+
+  # ---- time-activity curve fit ---------------------------------------------------------------
+  # Kidneys: the two fitted parameters, correlated. Relative SDs 8.9% (C0) and 8.7% (lambda) are
+  # Staanum's Fig. 6b example; with the reported AUC uncertainty of 6.1% they imply
+  # r(C0, lambda) = +0.76, hence r(C0, T_eff) = -0.76 (T_eff = ln2 / lambda): claim derived and checked.
+  kidneys.uptake_fraction:
+    {dist: lognormal, median: 0.028068, gsd: 1.0929, group: tac_fit.kidneys, unit: fraction of administered activity,
+     claim: staanum2021.fig6b.c0,
+     source: "nominal derived (see header); relative SD [Staanum2021] Fig. 6b"}
+  kidneys.effective_half_life_h:
+    {dist: lognormal, median: 54.48, gsd: 1.0907, group: tac_fit.kidneys, unit: h, claim: staanum2021.fig6b.lambda,
+     source: "nominal 2.27 d mean [staanum2021.dotatate.teff.mean]; relative SD [Staanum2021] Fig. 6b"}
+  # Liver, spleen: the fit enters as one factor on the TIA (AUC), same 6.1% (assumed to transfer).
+  "{organ}.activity_scale.tac_fit":
+    {organs: [liver, spleen], dist: normal, mean: 1, rel_sd: 0.061, group: "tac_fit.{organ}", unit: "-",
+     claim: staanum2021.fig6b.auc,
+     source: "[Staanum2021] Fig. 6b: AUC uncertainty (applied to {organ}; assumed to transfer)"}
+
+correlations:
+  - {between: [kidneys.uptake_fraction, kidneys.effective_half_life_h], rho: -0.76, claim: staanum2021.derived.rho_c0_teff}
+
+ratios:
+  - {name: kidneys_to_liver, numerator: kidneys, denominator: liver}
+  - {name: kidneys_to_spleen, numerator: kidneys, denominator: spleen}
+
+run:
+  n: 16384          # Monte Carlo samples (rounded up to a power of two for sobol)
+  sobol_n: 8192     # base size of the Sobol' design; evaluations = sobol_n * (2 + factors)
+  method: sobol
+  seed: 20261012
+  level: 0.95
