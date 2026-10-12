@@ -1,0 +1,41 @@
+RadioNuclide Uncertainty Lab
+Copyright 2026 Sobhan Shahbazi
+
+Licensed under the Apache License, Version 2.0 (see LICENSE). The licence covers the source code,
+tests, tools and original documentation of this project.
+
+Third-party and published material
+----------------------------------
+The files below contain *data derived from other parties' publications or databases*. They are
+included as numerical results with citation, for research use, and remain subject to the terms of
+their sources, which are NOT replaced by the Apache License:
+
+  src/RadioNuclide_Uncertainty_Lab/data/lu177_adult_male.json
+  src/RadioNuclide_Uncertainty_Lab/data/lu177_adult_female.json   (and any other S-value dataset
+  in that directory)
+      S-values and masses extracted from the MIRDcalc S-value database (MIRDsoft,
+      https://mirdsoft.org/s-value-database). The source states that its content is copyright
+      protected and may be used for personal and noncommercial use without prior written consent,
+      provides the data "as is", and names no open-data licence. Please cite: Kesner AL, Carter LM,
+      Ocampo Ramos JC, et al. MIRD Pamphlet No. 28, Part 1: MIRDcalc. J Nucl Med
+      2023;64(10):1524-1531. doi:10.2967/jnumed.122.264225. Check the source's current terms before
+      redistributing; tools/extract_mirdcalc_svalues.py regenerates the files from the source.
+
+  src/RadioNuclide_Uncertainty_Lab/data/claims.yaml
+      Individual numbers as printed in the open-access publications listed in docs/data-sources.md
+      (Staanum et al. 2021; Gear et al. 2018; Sjogreen Gleisner et al. 2022; Santoro et al. 2018;
+      Bodei et al. 2025; and the other sources named there), each with its location in the source.
+      Facts and measurements are reproduced with attribution; no text, tables or figures are
+      copied. Please cite the original papers when you use the numbers.
+      Also included, as individual numbers with citation:
+        - Lu-177 decay data from the LNHB DDEP evaluation (Kellett, Mougeot; 2003-2025), published at
+          https://www.lnhb.fr/nuclides/Lu-177_tables.pdf. Please cite X. Mougeot et al., Metrologia 63
+          (2026) 019001, doi:10.1088/1681-7575/ae3733.
+        - Twelve Lu-177 S-values (six targets, each from OpenDose and from IDAC-Dose 2.1; liver
+          source, ICRP 110 female phantom) from Table 1 of Chauvin et al., J Nucl Med 2020;61(10):1514, doi:10.2967/jnumed.119.240366.
+          The OpenDose website content is described there as CC BY-SA 4.0 and for research use; only
+          numbers from the paper's table are used here, with attribution.
+
+No endorsement by, or affiliation with, the authors of those works, MIRDsoft, LNHB, OpenDose, ICRP
+or any other data provider is implied. This software is research software and is not validated for
+clinical use.

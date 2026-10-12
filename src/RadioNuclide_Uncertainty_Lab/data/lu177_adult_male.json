@@ -1,0 +1,92 @@
+{
+  "dataset": "lu177_adult_male",
+  "nuclide": "Lu-177",
+  "phantom": "ICRP Adult Male",
+  "units": {
+    "s_value": "Gy/(MBq h)",
+    "mass": "kg"
+  },
+  "orientation": "s_total[target][source] = S(target <- source)",
+  "regions": [
+    "Kidneys",
+    "Liver",
+    "Spleen",
+    "Bone marrow - red (active)"
+  ],
+  "mass_kg": {
+    "Kidneys": 0.422,
+    "Liver": 2.36,
+    "Spleen": 0.2284,
+    "Bone marrow - red (active)": 1.394
+  },
+  "mass_note": "target 'TISSUE & BLOOD MASS' of the phantom (the mass used for self-dose S-values)",
+  "s_total": {
+    "Kidneys": {
+      "Kidneys": 0.00020477089368000002,
+      "Liver": 5.0365723968e-07,
+      "Spleen": 6.655369748040001e-07,
+      "Bone marrow - red (active)": 1.88968740696e-07
+    },
+    "Liver": {
+      "Kidneys": 5.0280567552e-07,
+      "Liver": 3.770204274e-05,
+      "Spleen": 1.4850711689400002e-07,
+      "Bone marrow - red (active)": 1.626162336e-07
+    },
+    "Spleen": {
+      "Kidneys": 6.659963073e-07,
+      "Liver": 1.487977236216e-07,
+      "Spleen": 0.00037772014176,
+      "Bone marrow - red (active)": 1.73080692216e-07
+    },
+    "Bone marrow - red (active)": {
+      "Kidneys": 1.80318473244e-07,
+      "Liver": 1.5649046424e-07,
+      "Spleen": 1.66886667324e-07,
+      "Bone marrow - red (active)": 3.4991227583999996e-05
+    }
+  },
+  "s_photon": {
+    "Kidneys": {
+      "Kidneys": 4.20292008e-06,
+      "Liver": 4.83837516e-07,
+      "Spleen": 6.628588200000001e-07,
+      "Bone marrow - red (active)": 1.884413412e-07
+    },
+    "Liver": {
+      "Kidneys": 4.82878584e-07,
+      "Liver": 1.61945154e-06,
+      "Spleen": 1.4818695120000003e-07,
+      "Bone marrow - red (active)": 1.5418656e-07
+    },
+    "Spleen": {
+      "Kidneys": 6.633910080000001e-07,
+      "Liver": 1.484559144e-07,
+      "Spleen": 7.3075377600000005e-06,
+      "Bone marrow - red (active)": 1.7212911480000002e-07
+    },
+    "Bone marrow - red (active)": {
+      "Kidneys": 1.79615808e-07,
+      "Liver": 1.4810591520000002e-07,
+      "Spleen": 1.6568951399999998e-07,
+      "Bone marrow - red (active)": 4.68180144e-07
+    }
+  },
+  "provenance": {
+    "archive_url": "https://mirdsoft.org/products/MIRDcalc/MIRDcalcDB-v20251023-1224x12-csv.zip",
+    "archive_bytes": 548334455,
+    "archive_last_modified": "Mon, 20 Jul 2026 15:13:35 GMT",
+    "archive_member": "MIRDcalcDB-v20251023-1224x12-csv/SDATA_Lu-177_ICRP Adult Male.csv",
+    "member_crc32": "4302f61d",
+    "member_sha256": "08d5da1eae3bc1fa7b834784608effceaf35a722c6258970fe9462fd5804cc5d",
+    "member_bytes": 184242,
+    "retrieved_utc": "2026-10-12T07:24:26+00:00",
+    "bytes_fetched": 2103004,
+    "db_version_in_file": "20260206",
+    "citation": "Kesner AL, Carter LM, Ocampo Ramos JC, et al. MIRD Pamphlet No. 28, Part 1: MIRDcalc - a freely available software tool for patient-specific internal radiation dose assessment (J Nucl Med 2023;64(10):1524-1531, doi:10.2967/jnumed.122.264225), as requested on the database page https://mirdsoft.org/s-value-database",
+    "terms": "Source terms (mirdsoft.org): content is copyright protected and may be used for personal and noncommercial use without prior written consent; no open licence is stated for the dataset. Only the numbers listed here are retained. Confirm the terms before redistributing; regenerate with this tool from your own copy if in doubt.",
+    "decay_data": "ICRP Publication 107 (as stated by the database)",
+    "phantom_reference": "ICRP Publication 110 (as stated by the database)",
+    "extraction_tool": "tools/extract_mirdcalc_svalues.py"
+  }
+}

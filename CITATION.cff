@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "RadioNuclide Uncertainty Lab"
+abstract: >-
+  Uncertainty-aware nuclear medicine dosimetry: transparent, reproducible uncertainty
+  propagation for internal dosimetry calculations, with sensitivity rankings and
+  physically meaningful error budgets.
+version: 0.2.0
+license: Apache-2.0
+authors:
+  - family-names: "Shahbazi"
+    given-names: "Sobhan"
+keywords:
+  - dosimetry
+  - nuclear medicine
+  - uncertainty propagation
+  - Monte Carlo
+  - sensitivity analysis

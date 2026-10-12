@@ -1,0 +1,212 @@
+{
+  "dataset": "lu177_adult_female",
+  "nuclide": "Lu-177",
+  "phantom": "ICRP Adult Female",
+  "units": {
+    "s_value": "Gy/(MBq h)",
+    "mass": "kg"
+  },
+  "orientation": "s_total[target][source] = S(target <- source)",
+  "regions": [
+    "Kidneys",
+    "Liver",
+    "Spleen",
+    "Bone marrow - red (active)",
+    "Pancreas",
+    "Gallbladder wall",
+    "Brain",
+    "Thyroid"
+  ],
+  "mass_kg": {
+    "Kidneys": 0.357,
+    "Liver": 1.81,
+    "Spleen": 0.1874,
+    "Bone marrow - red (active)": 1.064,
+    "Pancreas": 0.1446,
+    "Gallbladder wall": 0.008246,
+    "Brain": 1.349,
+    "Thyroid": 0.01946
+  },
+  "mass_note": "target 'TISSUE & BLOOD MASS' of the phantom (the mass used for self-dose S-values)",
+  "s_total": {
+    "Kidneys": {
+      "Kidneys": 0.00024198298416000004,
+      "Liver": 6.77025558e-07,
+      "Spleen": 8.995445334e-07,
+      "Bone marrow - red (active)": 2.37188808432e-07,
+      "Pancreas": 1.6265209068e-06,
+      "Gallbladder wall": 1.6464737520000001e-06,
+      "Brain": 1.180442353356e-09,
+      "Thyroid": 1.445383400292e-08
+    },
+    "Liver": {
+      "Kidneys": 6.782279796e-07,
+      "Liver": 4.8887849916e-05,
+      "Spleen": 2.75427219744e-07,
+      "Bone marrow - red (active)": 2.3445607931999998e-07,
+      "Pancreas": 8.2219089204e-07,
+      "Gallbladder wall": 3.933476208000001e-06,
+      "Brain": 3.3287612166000003e-09,
+      "Thyroid": 4.5500008417199996e-08
+    },
+    "Spleen": {
+      "Kidneys": 9.011209302000001e-07,
+      "Liver": 2.7659551726799997e-07,
+      "Spleen": 0.00045890146584000004,
+      "Bone marrow - red (active)": 2.1389226472800001e-07,
+      "Pancreas": 4.57016625864e-07,
+      "Gallbladder wall": 3.5446483699199997e-07,
+      "Brain": 3.19526643906e-09,
+      "Thyroid": 3.788423424e-08
+    },
+    "Bone marrow - red (active)": {
+      "Kidneys": 2.2932564202799997e-07,
+      "Liver": 2.2878228707999998e-07,
+      "Spleen": 2.0972640880800003e-07,
+      "Bone marrow - red (active)": 4.5834214931999995e-05,
+      "Pancreas": 2.1551113368e-07,
+      "Gallbladder wall": 2.84094785484e-07,
+      "Brain": 1.3659410124000002e-07,
+      "Thyroid": 2.3324733162e-07
+    },
+    "Pancreas": {
+      "Kidneys": 1.6132269024e-06,
+      "Liver": 8.1599402052e-07,
+      "Spleen": 4.50537344784e-07,
+      "Bone marrow - red (active)": 2.21776413264e-07,
+      "Pancreas": 0.0005930304721199999,
+      "Gallbladder wall": 3.4187860080000003e-06,
+      "Brain": 1.2596827718592e-09,
+      "Thyroid": 1.4714949528000001e-08
+    },
+    "Gallbladder wall": {
+      "Kidneys": 1.6127319959999998e-06,
+      "Liver": 3.939766992e-06,
+      "Spleen": 3.48752271816e-07,
+      "Bone marrow - red (active)": 2.9030697770400005e-07,
+      "Pancreas": 3.4043793840000006e-06,
+      "Gallbladder wall": 0.009224510571360001,
+      "Brain": 1.81037517336e-09,
+      "Thyroid": 2.52334922832e-08
+    },
+    "Brain": {
+      "Kidneys": 1.0422280213560002e-09,
+      "Liver": 3.03784513992e-09,
+      "Spleen": 2.88321660486e-09,
+      "Bone marrow - red (active)": 1.3452298272e-07,
+      "Pancreas": 1.1094236853804e-09,
+      "Gallbladder wall": 1.7743286253600002e-09,
+      "Brain": 6.5710780776e-05,
+      "Thyroid": 7.0102607112e-08
+    },
+    "Thyroid": {
+      "Kidneys": 1.439128220292e-08,
+      "Liver": 4.63709609028e-08,
+      "Spleen": 3.74926028832e-08,
+      "Bone marrow - red (active)": 2.43014085684e-07,
+      "Pancreas": 1.472643400788e-08,
+      "Gallbladder wall": 2.66430528432e-08,
+      "Brain": 7.32341665224e-08,
+      "Thyroid": 0.0043116775704
+    }
+  },
+  "s_photon": {
+    "Kidneys": {
+      "Kidneys": 4.8399825600000005e-06,
+      "Liver": 6.117253200000001e-07,
+      "Spleen": 8.698083839999999e-07,
+      "Bone marrow - red (active)": 2.361304332e-07,
+      "Pancreas": 1.431891864e-06,
+      "Gallbladder wall": 1.180510776e-06,
+      "Brain": 1.180076688e-09,
+      "Thyroid": 1.4442331319999999e-08
+    },
+    "Liver": {
+      "Kidneys": 6.12732708e-07,
+      "Liver": 1.874117916e-06,
+      "Spleen": 2.7473040000000005e-07,
+      "Bone marrow - red (active)": 2.105830008e-07,
+      "Pancreas": 7.9084764e-07,
+      "Gallbladder wall": 1.888037928e-06,
+      "Brain": 3.323534508e-09,
+      "Thyroid": 4.54140432e-08
+    },
+    "Spleen": {
+      "Kidneys": 8.716520880000001e-07,
+      "Liver": 2.75938902e-07,
+      "Spleen": 8.045097840000001e-06,
+      "Bone marrow - red (active)": 2.1222568800000002e-07,
+      "Pancreas": 4.5566532e-07,
+      "Gallbladder wall": 3.5359405920000003e-07,
+      "Brain": 3.193541892e-09,
+      "Thyroid": 3.78306252e-08
+    },
+    "Bone marrow - red (active)": {
+      "Kidneys": 2.2805281439999998e-07,
+      "Liver": 2.046458736e-07,
+      "Spleen": 2.0764456920000002e-07,
+      "Bone marrow - red (active)": 5.694853320000001e-07,
+      "Pancreas": 2.14695792e-07,
+      "Gallbladder wall": 2.8074218760000003e-07,
+      "Brain": 1.208490876e-07,
+      "Thyroid": 2.3226997319999997e-07
+    },
+    "Pancreas": {
+      "Kidneys": 1.419831648e-06,
+      "Liver": 7.85139372e-07,
+      "Spleen": 4.4919917999999996e-07,
+      "Bone marrow - red (active)": 2.2123258920000001e-07,
+      "Pancreas": 9.58232412e-06,
+      "Gallbladder wall": 2.5555610520000003e-06,
+      "Brain": 1.259632152e-09,
+      "Thyroid": 1.4706733680000002e-08
+    },
+    "Gallbladder wall": {
+      "Kidneys": 1.151627544e-06,
+      "Liver": 1.85735952e-06,
+      "Spleen": 3.481882704e-07,
+      "Bone marrow - red (active)": 2.8672009200000003e-07,
+      "Pancreas": 2.537748432e-06,
+      "Gallbladder wall": 3.0281571360000003e-05,
+      "Brain": 1.809111924e-09,
+      "Thyroid": 2.516121612e-08
+    },
+    "Brain": {
+      "Kidneys": 1.0418623560000002e-09,
+      "Liver": 3.0341649960000004e-09,
+      "Spleen": 2.8802131919999997e-09,
+      "Bone marrow - red (active)": 1.1841613200000001e-07,
+      "Pancreas": 1.109086704e-09,
+      "Gallbladder wall": 1.7730653760000003e-09,
+      "Brain": 2.610941976e-06,
+      "Thyroid": 6.99983244e-08
+    },
+    "Thyroid": {
+      "Kidneys": 1.437977952e-08,
+      "Liver": 4.63139856e-08,
+      "Spleen": 3.7443186e-08,
+      "Bone marrow - red (active)": 2.420283852e-07,
+      "Pancreas": 1.47215574e-08,
+      "Gallbladder wall": 2.657077668e-08,
+      "Brain": 7.310101320000001e-08,
+      "Thyroid": 3.85988904e-05
+    }
+  },
+  "provenance": {
+    "archive_url": "https://mirdsoft.org/products/MIRDcalc/MIRDcalcDB-v20251023-1224x12-csv.zip",
+    "archive_bytes": 548334455,
+    "archive_last_modified": "Mon, 20 Jul 2026 15:13:35 GMT",
+    "archive_member": "MIRDcalcDB-v20251023-1224x12-csv/SDATA_Lu-177_ICRP Adult Female.csv",
+    "member_crc32": "8561c4f6",
+    "member_sha256": "c7b764497195301b1b15fe2b6c12d6f38a8689cdaed43146aa93a1e0f377e944",
+    "member_bytes": 184148,
+    "retrieved_utc": "2026-10-12T07:47:58+00:00",
+    "bytes_fetched": 2103041,
+    "db_version_in_file": "20260206",
+    "citation": "Kesner AL, Carter LM, Ocampo Ramos JC, et al. MIRD Pamphlet No. 28, Part 1: MIRDcalc - a freely available software tool for patient-specific internal radiation dose assessment (J Nucl Med 2023;64(10):1524-1531, doi:10.2967/jnumed.122.264225), as requested on the database page https://mirdsoft.org/s-value-database",
+    "terms": "Source terms (mirdsoft.org): content is copyright protected and may be used for personal and noncommercial use without prior written consent; no open licence is stated for the dataset. Only the numbers listed here are retained. Confirm the terms before redistributing; regenerate with this tool from your own copy if in doubt.",
+    "decay_data": "ICRP Publication 107 (as stated by the database)",
+    "phantom_reference": "ICRP Publication 110 (as stated by the database)",
+    "extraction_tool": "tools/extract_mirdcalc_svalues.py"
+  }
+}
