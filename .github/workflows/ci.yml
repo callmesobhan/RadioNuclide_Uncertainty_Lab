@@ -7,7 +7,7 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04  # pinned: ubuntu-latest moves to Ubuntu 26 on 2026-10-19
     strategy:
       fail-fast: false
       matrix:
@@ -28,7 +28,7 @@ jobs:
   # Guards against numpy/scipy releases changing statistical behaviour: tests use fixed seeds
   # and analytic benchmarks, so a failure here is a real signal rather than flakiness.
   latest-deps:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04  # pinned: ubuntu-latest moves to Ubuntu 26 on 2026-10-19
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
