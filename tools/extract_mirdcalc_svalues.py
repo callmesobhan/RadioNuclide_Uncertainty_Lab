@@ -226,7 +226,7 @@ def main(argv: list[str] | None = None) -> int:
     }
     out = build(sheet, regions, a.dataset, a.nuclide, provenance)
     a.out.parent.mkdir(parents=True, exist_ok=True)
-    a.out.write_text(json.dumps(out, indent=2, ensure_ascii=False) + "\n")
+    a.out.write_text(json.dumps(out, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print(
         f"wrote {a.out} ({len(regions)}x{len(regions)} regions; fetched "
         f"{provenance['bytes_fetched']} bytes of {archive['archive_bytes']})"

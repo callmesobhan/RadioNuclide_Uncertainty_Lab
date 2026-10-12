@@ -79,9 +79,9 @@ from RadioNuclide_Uncertainty_Lab import analyze, load_config
 
 cfg = load_config("examples/configs/lu177_dotatate_multi_organ.yaml")
 a = analyze(cfg.model, cfg.run, config_sha256=cfg.sha256)
-a.summaries["kidneys"]          # mean, SD, interval, skewness, GSD
-a.budgets["kidneys"].lines      # per-factor S1 / ST with confidence intervals
-a.matrix                        # factors x outputs
+a.summaries["kidneys"]  # mean, SD, interval, skewness, GSD
+a.budgets["kidneys"].lines  # per-factor S1 / ST with confidence intervals
+a.matrix  # factors x outputs
 ```
 
 More: [`examples/01_python_api.py`](examples/01_python_api.py);
