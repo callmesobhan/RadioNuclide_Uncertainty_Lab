@@ -1,16 +1,32 @@
-# RadioNuclide Uncertainty Lab
+<div align="center">
 
-**Uncertainty-aware nuclear medicine dosimetry.**
-Transparent, reproducible uncertainty propagation for internal dosimetry calculations, with
-sensitivity rankings and physically meaningful error budgets, for one organ or several.
+# RadioNuclide Uncertainty Lab ☢️📊
 
-`Python` · `Monte Carlo` · `SciPy` · `NumPy` · `Statistical modelling`
+**Uncertainty-Aware Nuclear Medicine Dosimetry**  
+*Transparent, reproducible Monte Carlo uncertainty propagation, Sobol' global sensitivity, and source-attributed error budgets for single- and multi-organ MIRD dosimetry*
 
-> **Research software.** Not validated for clinical decision-making. The shipped scenario is
-> assembled from published open-access values (see [Data and benchmarks](#data-and-benchmarks))
-> and is not a patient.
+[![CI](https://github.com/callmesobhan/RadioNuclide_Uncertainty_Lab/actions/workflows/ci.yml/badge.svg)](https://github.com/callmesobhan/RadioNuclide_Uncertainty_Lab/actions/workflows/ci.yml)
+[![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
+[![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)](pyproject.toml)
+[![Domain](https://img.shields.io/badge/Domain-MIRD%20Internal%20Dosimetry%20%7C%20Monte%20Carlo-10b981)](#why-this-exists)
+
+</div>
+
+> [!IMPORTANT]
+> **Research software.** Not validated for clinical decision-making. The shipped scenario is assembled from published open-access values (see [Data and benchmarks](#data-and-benchmarks)) and is not a patient.
 
 ---
+
+## Architecture & Pipeline
+
+```mermaid
+flowchart LR
+    A["📄 YAML Scenario Config (Distributions, Correlations, Sources)"] --> B["Monte Carlo Sampler (Shared + Organ-Specific Terms)"]
+    B --> C["MIRD Biokinetic & S-Value Dose Engine"]
+    C --> D["Organ Doses + Credible Intervals + Correlation Matrix"]
+    C --> E["Spearman Screening & Sobol' Variance Sensitivity"]
+    E --> F["Physical Source Error Budget (Calibration, Fit, Mass, S-Factor)"]
+```
 
 ## Why this exists
 
